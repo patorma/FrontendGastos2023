@@ -1,0 +1,50 @@
+<ul class="alert alert-danger" *ngIf="errores.length > 0">
+  <li *ngFor="let err of errores">
+    {{ err }}
+  </li>
+</ul>
+<div class="container pa border">
+  <div class="card  bg-dark border-primary text-white my-4">
+    <div class="card-header">Búsqueda de Gastos</div>
+  </div>
+  <div class="card-body cb">
+    <h4 class="card-title">Buscar por fecha y año el total de gastos</h4>
+    <form #filtroForm="ngForm">
+      <div class="form-group x row">
+        <label for="mes" class="col-form-label  m col-sm-2">Mes</label>
+        <div class="col-sm-6">
+          <select
+          class="form-control"
+          [(ngModel)]="mes"
+          name="mes"
+          style="width: 520px;"
+
+       >
+       <option>--- selecciona el mes---</option>
+       <option value="{{i+1}}" *ngFor="let dato of datos; let i = index">
+           {{dato}}
+       </option>
+      </select>
+        </div>
+      </div>
+      <div class="form-group row ">
+        <mat-form-field>
+          <mat-label>Selecciona un año</mat-label>
+          <mat-select [(ngModel)]="selectedYear" name="selectedYear">
+            <mat-option *ngFor="let ano of anos" [value]="ano">{{ ano}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        </div>
+
+      <div class="form-group bot row">
+        <button
+        class="btn btn-primary filtra"
+        role="button"
+        (click)="filtro()"
+        >
+            Buscar por fecha
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,87 @@
+<ul class="alert alert-danger" *ngIf="errores.length > 0">
+  <li *ngFor="let err of errores">
+      {{ err }}
+  </li>
+</ul>
+
+<div class="card my-4 ">
+  <div class="card-header">{{ titulo }}</div>
+  <div class="card-body">
+    <form #gastoForm="ngForm">
+      <div class="form-group row">
+        <label for="description" class="col-form-label col-sm-2">Descripción del gasto</label
+          >
+          <div class="col-sm-6">
+            <textarea
+            class="form-control"
+            [(ngModel)]="gasto.description"
+            name="description"
+            cols="30"
+            rows="10"
+            #description="ngModel"
+          >
+          </textarea>
+          <div
+          class="alert alert-danger"
+          *ngIf="description.invalid && (description.dirty || description.touched)"
+        >
+          <!--este div es el principal que pregunta si hay error-->
+          <div *ngIf="description.errors?.['required']">
+            Descripcion del gasto es requerido por favor
+          </div>
+          <div *ngIf="description.errors?.['minlength']">
+            Descripcion debe tener 30 caracteres como minimo
+          </div>
+          <div *ngIf="description.errors?.['maxlength']">
+            Descripción debe tener 250 caracteres como máximo
+          </div>
+          </div>
+      </div>
+</div>
+<div class="form-group row">
+  <label for="valor" class="col-form-label col-sm-2">Precio</label>
+  <div class="col-sm-6 padre">
+    <input type="number" class="form-control inp" [(ngModel)]="gasto.price" name="price" #price="ngModel" />
+     <div class="alert alert-danger" *ngIf="price.invalid && (price.dirty || price.touched)">
+            <!--este div es el principal que pregunta si hay error-->
+            <div *ngIf="price.errors?.['required']">
+              El precio del gasto es requerido
+          </div>
+     </div>
+  </div>
+</div>
+<div class="form-group row">
+  <label for="fecha" class="col-form-label col-sm-2 father2">Fecha</label>
+  <div class="col-sm-6">
+    <input [matDatepicker]="miDatepicker" class="form-control" [(ngModel)]="gasto.fecha" name="fecha" style="display: inline; width: 300px" />
+    <mat-datepicker-toggle [for]="miDatepicker"></mat-datepicker-toggle>
+    <mat-datepicker #miDatepicker></mat-datepicker>
+  </div>
+</div>
+<div class="form-group row">
+  <label for="tipo" class="col-form-label col-sm-2 father">Tipo de gasto</label>
+  <div class="col-sm-6">
+    <select [compareWith]="compararTipo" class="form-control children" [(ngModel)]="gasto.tipoGasto" name="tipo" style="width: 440px;">
+      <option [ngValue]="undefined">--- seleccionar un tipo de gasto ---</option>
+        <!-- se esta pasando por valor en el ngValue la instancia del objeto tipo en cada iteracion y despues en nombre en {{}} -->
+        <option  *ngFor="let tipo of tipos" [ngValue]="tipo">
+          {{tipo.tipo}}
+        </option>
+    </select>
+  </div>
+</div>
+<div class="form-group row">
+  <div class="col-sm-6">
+      <button class="btn btn-primary" role="button" (click)="create()" *ngIf="!gasto.id; else elseBlock" [disabled]="!gastoForm.form.valid">
+Crear
+</button>
+      <ng-template #elseBlock>
+          <button class="btn btn-primary" role="button" (click)="update()" [disabled]="!gastoForm.form.valid">
+Editar
+</button>
+      </ng-template>
+  </div>
+</div>
+    </form>
+  </div>
+</div>

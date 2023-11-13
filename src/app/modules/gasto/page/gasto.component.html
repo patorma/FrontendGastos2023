@@ -1,0 +1,67 @@
+<div class="card border-primary tarjeta mb-3 panel">
+  <div class="card-header">{{title}}</div>
+  <div class="card-body text-primary">
+    <h4 class="card-title">Listado de gastos </h4>
+    <div class="my-2 text-left">
+      <button class="btn btn-rounded btn-primary" type="button" [routerLink]="['/gasto/newGasto']">
+          Creas gasto
+      </button>
+    </div>
+    <div *ngIf="gastos?.length == 0" class="alert alert-info">
+           No hay registros en la base de datos!
+    </div>
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped table-sm table-md" *ngIf="gastos.length > 0">
+        <thead>
+          <tr>
+            <th>id</th>
+            <th>Descripción del gasto</th>
+            <th>Valor</th>
+            <th>Fecha</th>
+            <th>Tipo de gasto</th>
+            <th>Editar</th>
+            <th>Eliminar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let gasto of gastos">
+            <td>{{gasto.id}}</td>
+             <td>{{gasto.description}}</td>
+             <td>{{gasto.price  | currency:'CLP':'symbol-narrow'}}</td>
+             <td>{{gasto.fecha | date: "EEEE dd, MMMM yyyy"}}</td>
+             <td>{{gasto.tipoGasto.tipo}}</td>
+             <td>
+                <button type="button" name="editar" [routerLink]="['/gasto/newGasto', gasto.id]" class="btn btn-primary">
+                  editar
+                </button>
+             </td>
+             <td>
+              <button type="button" name="eliminar" class="btn btn-danger" (click)="delete(gasto)">
+                  eliminar
+              </button>
+             </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <app-page *ngIf="paginador" [paginador]="paginador"></app-page>
+  </div>
+</div>
+
+<!--Tarjeta lateral que mostrara el valor total acumulados de lso gastos y el número de clientes que tiene la aplicacion-->
+<div class="col-md-3 d">
+  <div class="card text-center bg-danger text-white mb-3">
+    <div class="card-body">
+      <h3>Gasto Total Acumulado</h3>
+      <h4>{{valor }}</h4>
+    </div>
+  </div>
+  <div class="card text-center  bg-success text-white mb-3">
+    <div class="card-body">
+      <h3>Total Gastos</h3>
+      <h4 class="display-4">
+        <i class="fas fa-money-bill-wave"></i> {{cantidad}}
+      </h4>
+    </div>
+  </div>
+</div>
